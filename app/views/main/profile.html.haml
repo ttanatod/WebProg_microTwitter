@@ -1,0 +1,12 @@
+%h1.display-5.mt-3.mb-5 Profile
+
+.row
+  .col
+    = render "layouts/profile"
+  .col.align-self-end
+    - if @current_user.followees.include?(@user)
+      = button_to "Unfollow", unfollow_user_path, method: "POST", class: "btn btn-secondary"
+    - else
+      = button_to "Follow", follow_user_path, method: "POST", class: "btn btn-primary"
+%p
+  = render "post"

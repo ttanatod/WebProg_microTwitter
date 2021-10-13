@@ -1,0 +1,45 @@
+%h1.display-5.mt-3.mb-5 Feed
+
+/ %p#alert.alert-secondary= alert
+/ %p
+/   .alert.alert-secondary{role: "alert"} 
+/     = alert
+= render "post"
+
+/ %p
+/   = link_to 'New Post' , create_post_path, class: 'btn btn-primary mt-2'
+
+/ %p 
+/   - if @posts.any?
+/     - @posts.each do |post|
+/       .card.border-secondary.mb-3
+/         .card-header 
+/           = User.find(post.user_id).name
+/         .card-body
+/           %p.card-text
+/             = post.msg
+
+
+/ %p
+/ - if @posts.any?
+/   %br
+/   %strong Posts
+/   %br
+/   %table{:border => 1}
+/     %thead
+/       %tr
+/         %th Post by
+/         %th Msg
+/         %th Date
+/         %th{:colspan => "3"}
+/     %tbody
+/       - @posts.each do |post|
+/         %tr
+/           %td= post.user_id
+/           %td= post.msg
+/           %td= post.created_at
+/           %td= link_to 'Edit', edit_post_path(post)
+/           %td= link_to 'Destroy', post, method: :delete, data: { confirm: 'Are you sure?' }
+/ - else
+/   %br
+/   %strong no post to show

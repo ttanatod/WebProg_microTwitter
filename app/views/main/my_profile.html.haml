@@ -1,0 +1,9 @@
+%h1.display-5.mt-3.mb-5 My Profile
+
+.row
+  .col
+    = render "layouts/profile"
+  .col.align-self-end
+    = link_to 'Log out' , logout_path, class: 'btn btn-secondary mt-2 text-white', data: { confirm: 'Are you sure?' }
+%p 
+  = render "post"

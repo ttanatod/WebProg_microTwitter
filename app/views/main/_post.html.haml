@@ -1,0 +1,14 @@
+%p 
+  - if @posts.any?
+    - @posts.each do |post|
+      .card.border-secondary.mb-3
+        .card-header 
+          = User.find(post.user_id).name
+        .card-body
+          %p.card-text
+            = post.msg
+        .card-body
+          %p.card-text
+            = post.created_at
+  - else 
+    no post to show

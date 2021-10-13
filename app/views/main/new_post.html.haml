@@ -1,0 +1,9 @@
+%h1.display-5.mt-3.mb-5 New Post
+%p#alert= alert
+
+= simple_form_for @post, url: create_post_path, method: 'post' do |f|
+
+  = f.input :user_id, as: :hidden, input_html: {value: @current_user.id}
+  = f.input :msg, required: false
+  = f.button :submit, 'Create', class: "btn btn-primary mt-2"
+  = link_to 'Cancel' , feed_path, class: 'btn btn-secondary mt-2'

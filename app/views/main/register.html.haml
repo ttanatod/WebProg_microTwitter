@@ -1,0 +1,16 @@
+%h1.display-5.mt-3.mb-5 Register Page 
+
+= simple_form_for @user, url: url_for(action: 'create_user', controller: 'main'), method: 'post' do |f|
+  .form-inputs
+    .row
+      .col-md-6.col-sm-12
+        = f.input :email, placeholder: 'user@domain.com', required: false
+      .col-md-6.col-sm-12
+        = f.input :name, required: false
+    .row
+      .col-md-6.col-sm-12
+        = f.input :password, required: false, hint: 'minimum is 4 characters'
+      .col-md-6.col-sm-12
+        = f.input :password_confirmation
+  = f.button :submit, 'OK', class: "btn btn-primary mt-2"
+  = link_to 'Cancel' , main_path, class: 'btn btn-secondary mt-2 text-white'
