@@ -10,5 +10,29 @@
         .card-body
           %p.card-text
             = post.created_at
+        - if post.likes.count != 0
+          / .card-body
+          /   %p.card-text
+          /     = "Like by #{pluralize(post.likes.count, 'user')}"
+          .card-body
+            / Button trigger modal
+            %button.btn.btn-outline-info.btn-sm{"data-bs-target" => "#showLikeUser", "data-bs-toggle" => "modal", :type => "button"}
+              = "Like by #{pluralize(post.likes.count, 'user')}"
+            / Modal
+            #showLikeUser.modal.fade{"aria-hidden" => "true", "aria-labelledby" => "exampleModalLabel", :tabindex => "-1"}
+              .modal-dialog
+                .modal-content
+                  .modal-header
+                    %h5#exampleModalLabel.modal-title Like by
+                    %button.btn-close{"aria-label" => "Close", "data-bs-dismiss" => "modal", :type => "button"}
+                  .modal-body
+                    - post.liker.each do |user|
+                      %p
+                        = link_to user.name, profile_path(user.name)
+        .card-footer
+          - if post.is_like_by(@current_user)
+            = button_to "Unlike", {controller: "like", action: "unlike", post_id: post.id}, method: :post, class: "btn btn-secondary"
+          - else
+            =button_to "Like", {controller: "like", action: "like", post_id: post.id}, method: :post, class: "btn btn-primary"
   - else 
     no post to show

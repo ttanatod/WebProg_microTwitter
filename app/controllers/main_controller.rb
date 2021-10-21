@@ -9,18 +9,19 @@ class MainController < ApplicationController
     if session[:user_id]
       redirect_to feed_path
     end
+    @disable_nav = true
   end
 
   def check_login
     email = params[:login][:email]
     pass = params[:login][:password]
     @user = User.find_by(email: email).authenticate(pass) rescue nil
-    puts "------email #{email.class}---------"
-    puts "------pass #{pass.class}----------"
+    # puts "------email #{email.class}---------"
+    # puts "------pass #{pass.class}----------"
     if @user
       puts '-----------found------------' 
       session[:user_id] = @user.id
-      redirect_to feed_path
+      redirect_to feed_path, flash:{success: "Log in successfully"}
     else
       puts '-----------not found-----------'
       redirect_to main_path, flash:{alert: "Wrong email or password!"}
@@ -51,21 +52,19 @@ class MainController < ApplicationController
   end
 
   def feed
-    # @user = User.find(session[:user_id])
-    @posts = []
-    # following = Follow.where(follower_id: session[:user_id])
-    following_user = @current_user.followees
-    puts following_user.first.id
-    #puts "----------#{following_user.count}----------------"
-    #puts following[0][:f]
-    following_user.each { |u| 
-      @posts += Post.where(user_id: u.id)
-    }
-    @posts = @posts.sort { |a, b| b[:created_at] <=> a[:created_at]}
+    # @posts = []
+    # following_user = @current_user.followees
+    # following_user.each { |u| 
+    #   @posts += Post.where(user_id: u.id)
+    # }
+    # @posts = @posts.sort { |a, b| b[:created_at] <=> a[:created_at]}
+    @posts = @current_user.get_feed_post
   end
 
   def profile
     @user = User.find_by(name: params[:name])
+    # puts "-------#{Post.first.msg}-------#{Post.first.user_id}--------"
+    # puts "-------#{Post.second.msg}-------#{Post.second.user_id}--------"
     if @user == nil
       redirect_to feed_path, flash:{ warn: "User not found"}
       return
@@ -74,6 +73,7 @@ class MainController < ApplicationController
       return
     end
     @posts = Post.where(user_id: @user.id).reverse()
+    puts "---------#{@posts.count}---------"
   end
 
   def my_profile
@@ -82,14 +82,16 @@ class MainController < ApplicationController
   end
 
   def follow 
-    @current_user.followees << @user
+    #@current_user.followees << @user
     # redirect_back(fallback_location: feed_path(@user[:name]))
+    Follow.create(follower_id: @current_user.id, followee_id: @user.id)
     redirect_to feed_path, flash:{success: "follow successfully"}
   end
 
   def unfollow
-    @current_user.followed_users.find_by(followee_id: @user.id).destroy
+    #@current_user.followed_users.find_by(followee_id: @user.id).destroy
     # redirect_back(fallback_location: feed_path(@user[:name]))
+    Follow.find_by(follower_id: @current_user.id, followee_id: @user.id).destroy
     redirect_to feed_path, flash:{warn: "unfollow successfully"}
   end
 
@@ -115,7 +117,11 @@ class MainController < ApplicationController
     # redirect_to feed_path(params[:name])
     # redirect_to my_profile_path
     # puts "--------------#{params[:name]}--------------------"
-    redirect_to action: "profile", name: params[:name]
+    if params[:name] == ""
+      redirect_to feed_path
+    else
+      redirect_to action: "profile", name: params[:name]
+    end
   end
 
   private

@@ -11,7 +11,8 @@
     %link{:crossorigin => "anonymous", :href => "https://cdn.jsdelivr.net/npm/bootstrap@5.1.2/dist/css/bootstrap.min.css", :integrity => "sha384-uWxY/CJNBR+1zjPWmfnSnVxwRheevXITnMqoEIeG1LJrdI0GlVs/9cVSyPYXdcSF", :rel => "stylesheet"}/
     %script{:crossorigin => "anonymous", :integrity => "sha384-kQtW33rZJAHjgefvhyyzcGF3C5TFyBQBA13V1RKPf4uH+bwyzQxZ6CmMZHmNBEfJ", :src => "https://cdn.jsdelivr.net/npm/bootstrap@5.1.2/dist/js/bootstrap.bundle.min.js"}
   %body
-    = render "layouts/navigation"
+    - if @disable_nav == nil
+      = render "layouts/navigation"
 
     - flash.each do |key, message|
       %div{:class => "alert #{flash_class(key)} alert-dismissible fade show m-3 ", :role => "alert"}

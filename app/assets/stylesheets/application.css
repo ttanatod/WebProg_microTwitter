@@ -12,7 +12,7 @@
  *
  *= require_tree .
  *= require_self
- */
 .alert-dismissible {
   padding-left: $close-font-size + $alert-padding-x * 2;
 }
+ */

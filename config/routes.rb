@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  get 'like/like'
+  get 'like/unlike'
   resources :posts
   resources :users
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
@@ -21,4 +23,7 @@ Rails.application.routes.draw do
   get 'search_profile', to: 'main#search_profile'
 
   get 'logout', to: 'main#logout'
+
+  post 'like/like', to: 'like#like'
+  post 'like/unlike', to: 'like#unlike'
 end

@@ -24,8 +24,8 @@ module MainConcern
       @current_user = User.find(session[:user_id])
     end
 
-    def set_user_by_name
+  def set_user_by_name
       @user = User.find_by(name: params[:name])
-    end
+  end
 
 end

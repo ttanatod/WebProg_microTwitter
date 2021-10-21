@@ -1,6 +1,7 @@
 class PostsController < ApplicationController
+  include MainConcern
 
-  before_action :set_post, only: %i[ show edit update destroy ]
+  before_action :set_post, only: %i[ ]
 
   # GET /posts or /posts.json
   def index
