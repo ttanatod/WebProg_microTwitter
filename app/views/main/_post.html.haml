@@ -16,10 +16,10 @@
           /     = "Like by #{pluralize(post.likes.count, 'user')}"
           .card-body
             / Button trigger modal
-            %button.btn.btn-outline-info.btn-sm{"data-bs-target" => "#showLikeUser", "data-bs-toggle" => "modal", :type => "button"}
+            %button.btn.btn-outline-info.btn-sm{"data-bs-target" => "#showLikeUser#{post.id}", "data-bs-toggle" => "modal", :type => "button"}
               = "Like by #{pluralize(post.likes.count, 'user')}"
             / Modal
-            #showLikeUser.modal.fade{"aria-hidden" => "true", "aria-labelledby" => "exampleModalLabel", :tabindex => "-1"}
+            .modal.fade{id: "showLikeUser#{post.id}", role: "dialog"}
               .modal-dialog
                 .modal-content
                   .modal-header
