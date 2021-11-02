@@ -16,19 +16,9 @@
           /     = "Like by #{pluralize(post.likes.count, 'user')}"
           .card-body
             / Button trigger modal
-            %button.btn.btn-outline-info.btn-sm{"data-bs-target" => "#showLikeUser#{post.id}", "data-bs-toggle" => "modal", :type => "button"}
+            %button.btn.btn-outline-info.btn-sm.show-user{"data-bs-target" => "#showLikeUser#{post.id}", "data-bs-toggle" => "modal", :type => "button", "data-like": post.liker.map{|u| u[:name]} }
               = "Like by #{pluralize(post.likes.count, 'user')}"
-            / Modal
-            .modal.fade{id: "showLikeUser#{post.id}", role: "dialog"}
-              .modal-dialog
-                .modal-content
-                  .modal-header
-                    %h5#exampleModalLabel.modal-title Like by
-                    %button.btn-close{"aria-label" => "Close", "data-bs-dismiss" => "modal", :type => "button"}
-                  .modal-body
-                    - post.liker.each do |user|
-                      %p
-                        = link_to user.name, profile_path(user.name)
+              = puts post.liker.map{|u| u[:name]}.class
         .card-footer
           - if post.is_like_by(@current_user)
             = button_to "Unlike", {controller: "like", action: "unlike", post_id: post.id}, method: :post, class: "btn btn-secondary"
@@ -36,3 +26,34 @@
             =button_to "Like", {controller: "like", action: "like", post_id: post.id}, method: :post, class: "btn btn-primary"
   - else 
     no post to show
+
+
+.modal.fade{id: "modal", role: "dialog"}
+  .modal-dialog
+    .modal-content
+      .modal-header
+        %h5#exampleModalLabel.modal-title Like by
+        %button.btn-close{"aria-label" => "Close", "data-bs-dismiss" => "modal", :type => "button"}
+      .modal-body
+        %ul#like-user
+          
+
+:javascript
+
+  $(".show-user").click(function(){
+    var user =  $(this).attr("data-like");
+    user = user.slice(2, user.length-2);
+    console.log(user);
+    user = user.split("\", \"");
+    console.log(user);
+    console.log(typeof user);
+    $("#like-user").empty();
+    for (let i = 0;i < user.length;i++) {
+      
+      $("#like-user").append('<li><a href="http://localhost:3000/profile/'+ user[i] + '">' + user[i] + '</a></li>');
+    }
+    
+    
+    var myModal = new bootstrap.Modal(document.getElementById('modal'), {})
+    myModal.show();
+  });
