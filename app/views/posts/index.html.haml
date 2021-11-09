@@ -1,6 +1,6 @@
 %h1 Listing posts
 
-%table
+%table.table#index
   %thead
     %tr
       %th Msg
@@ -21,3 +21,15 @@
 %br
 
 = link_to 'New Post', new_post_path
+
+:javascript
+  $(document).ready(function() {
+    $('#index').DataTable({
+      "scrollY":        "400px",
+      "scrollCollapse": true,
+      "paging":         false,
+      dom: 'Bfrtip',
+      buttons: ['copy', 'csv', 'pdf'],
+      colReorder: true
+    });
+  });

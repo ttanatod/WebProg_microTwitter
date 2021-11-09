@@ -16,7 +16,9 @@
           /     = "Like by #{pluralize(post.likes.count, 'user')}"
           .card-body
             / Button trigger modal
-            %button.btn.btn-outline-info.btn-sm.show-user{"data-bs-target" => "#showLikeUser#{post.id}", "data-bs-toggle" => "modal", :type => "button", "data-like": post.liker.map{|u| u[:name]} }
+            / %button.btn.btn-outline-info.btn-sm.show-user{"data-bs-target" => "#showLikeUser#{post.id}", "data-bs-toggle" => "modal", :type => "button", "data-like": post.liker.map{|u| u[:name]} }
+            %button.btn.btn-outline-info.btn-sm.show-user{:type => "button", "data-like": post.get_likers_name }
+
               = "Like by #{pluralize(post.likes.count, 'user')}"
               = puts post.liker.map{|u| u[:name]}.class
         .card-footer
@@ -42,14 +44,13 @@
 
   $(".show-user").click(function(){
     var user =  $(this).attr("data-like");
-    user = user.slice(2, user.length-2);
+    console.log(typeof user);
     console.log(user);
-    user = user.split("\", \"");
+    user = user.split(" ");
     console.log(user);
     console.log(typeof user);
     $("#like-user").empty();
     for (let i = 0;i < user.length;i++) {
-      
       $("#like-user").append('<li><a href="http://localhost:3000/profile/'+ user[i] + '">' + user[i] + '</a></li>');
     }
     
